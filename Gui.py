@@ -4,7 +4,7 @@ January 15th 2020
 """
 
 #! python 3
-# ver.1.00
+# ver.1.10
 # Gui.py  -  this program is my module about GUI.
 
 
@@ -16,9 +16,9 @@ from tkinter import filedialog
 ### get file path ###
 # enter self.path(extension) --> return self.filepath_list
 class FilePath():
-    def path(self, extension):
+    def path(self, extension, filename):
         self.root = tk.Tk()
-        self.root.title("select files")
+        self.root.title(filename + " files")
         bt_file = tk.Button(self.root, text = "select file", command = lambda: self.get_filepath(extension), bg = "#bbbbff")
         self.file_path = tksc.ScrolledText(self.root, wrap = tk.WORD, height = 10, width = 70)
         bt_get = tk.Button(self.root, text = "get file path", command = lambda: self.end(), bg = "#ff6464")
@@ -45,5 +45,5 @@ class FilePath():
 
 if __name__ == "__main__":
     gui = FilePath()
-    gui.path("txt")
+    gui.path("txt", "text")
     print(gui.filepath_list)

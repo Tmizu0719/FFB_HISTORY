@@ -57,19 +57,38 @@ class SuperFigure(object):
 
 if __name__ == "__main__":
     from FFB_HISTORY import HISTORY
+    from Gui import FilePath
+    from fun_ConvertFilename import fun_basename
+    ### read HISTORY file
+    fpH = FilePath()
+    fpH.path("txt", "HISTORY")
     hs = HISTORY()
-    hs.path = "HISTORY/u-velociy/4C/rf_wake_4C.txt"
+    hs.path = fpH.filepath_list[0]
+    basename, directoryname = fun_basename(hs.path, ".txt")
+    print((basename + " now loading..."))
     hs.read()
     hs.coordinate()
     hs.measure_data()
+    print("Successful!")
+    ## personal option
     hs.separate_linenum(21)
     line = hs.line["line1"]
 
+    ### make Super Figure
+    fpS = FilePath()
+    fpS.path("stl", "Calculation Traget")
     SF = SuperFigure()
-    SF.stl_path = "stl/Re4E5_STL.stl"
+    SF.stl_path = fpS.filepath_list[0]
+    basename, directoryname = fun_basename(SF.stl_path, ".stl")
+    print((basename + " now loading..."))
+    SF.read_stl()
+    print("Successful!")
+    ## personal option
+    # calculation area
     SF.X_area = [-2, 7]
     SF.Y_area = [-3, 3]
-    SF.read_stl()
+    # plot point
     SF.PlotPoint = line[:, :2]
     SF.PlotData = line[:, 3:]
+    
     SF.show()        

@@ -64,7 +64,7 @@ class RectSelect(object):
     def draw_figure(self):
         index_SP, SP = self.extract_point()
         if len(index_SP[0]) == 0:
-            pass
+            print("Not Found: Plot Point in Selected area.")
         else:
             # get data at plot points
             SP_data = np.empty((0, self.data.shape[0]))
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     x = range(10)
     y = range(10)
     data = np.random.random(1000) * 10
-    
+
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111)
     ax1.plot(x,y,'.')

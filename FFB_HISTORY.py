@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # get filepath
     from Gui import FilePath
     fp = FilePath()
-    fp.path("txt")
+    fp.path("txt", "HISTORY")
     filepath = fp.filepath_list
     if filepath == [""]:
         print("File Path Not Selected.")
