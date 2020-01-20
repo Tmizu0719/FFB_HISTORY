@@ -3,7 +3,7 @@ January 12th 2020
             Author T.Mizumoto
 """
 #! python 3
-# ver.1.10
+# ver.1.20
 # FFB_HISTORY.py  -  this program exrtact coordinate and calculate data.
 
 import numpy as np
@@ -17,6 +17,7 @@ class HISTORY:
     data_list = []
     coordinate_list = []
     default_param = 28
+    line = {}
 
     # txt file ---> param_list(coordinate etc.), data_list(numpy.array) 
     def read(self):
@@ -34,12 +35,6 @@ class HISTORY:
         
         data_list = []
         for i in strdata_list:
-            """
-            sprit_strdata = i.split("  ")
-            oneS_data = sprit_strdata[4].split(" ")
-            sprit_strdata[4] = oneS_data[0]
-            sprit_strdata[5] = oneS_data[1]
-            """
             sprit_strdata = re.findall(r"\d\.\d+E\S\d+|\S\d\.\d+E\S\d+", i)
             data_line = [float(j) for j in sprit_strdata]
             data_list.append(data_line)
@@ -55,7 +50,7 @@ class HISTORY:
             if jugde == None:
                 pass
             else:
-                coordinate = re.findall(r"\d\.\d+", i)
+                coordinate = re.findall(r"\d\.\d+|\S\d\.\d+", i)
                 if coordinate == []:
                     coordinate = [float("nan"), float("nan"), float("nan")]
                 else:
@@ -83,6 +78,18 @@ class HISTORY:
         with open(folder + name + "_DefParamList.txt", mode = "w") as f:
             f.writelines(self.param_list)
 
+    def separate_linenum(self, line_num):
+        NoD = int(self.coordinate_list.shape[0] / line_num)
+        pend = 0
+        for i in range(line_num):
+            pstrat = pend
+            pend = NoD + (NoD * i)
+            coor_line = self.coordinate_list[pstrat:pend, :]
+            data_line = self.measure_data[:, pstrat:pend]
+            data_line = np.reshape(data_line, (NoD, -1))
+            line = np.hstack([coor_line, data_line])
+            exec("self.line['line%s'] = line" % i)
+
 
 if __name__ == "__main__":
     # get filepath
@@ -93,15 +100,15 @@ if __name__ == "__main__":
     if filepath == [""]:
         print("File Path Not Selected.")
     else:
-        import os
         from fun_ConvertFilename import fun_basename
         for i in filepath:
             hs = HISTORY()
             hs.path = i
-            basename, directoryname = fun_basename(i)
+            basename, directoryname = fun_basename(i, ".txt")
             print(basename + " now loading...")
             hs.read()
             hs.coordinate()
             hs.measure_data()
-            hs.savetxt(directoryname, basename)
+            hs.separate_linenum(21)
+            #hs.savetxt(directoryname, basename)
             print("Successful " + basename)
