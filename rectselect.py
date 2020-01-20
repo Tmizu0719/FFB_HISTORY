@@ -67,10 +67,10 @@ class RectSelect(object):
             print("Not Found: Plot Point in Selected area.")
         else:
             # get data at plot points
-            SP_data = np.empty((0, self.data.shape[0]))
+            SP_data = np.empty((0, self.data.shape[1]))
             for i in index_SP[0]:
-                SP_data_1d = self.data[:, i]
-                SP_data = np.append(SP_data, np.reshape(SP_data_1d, (1, self.data.shape[0])), axis = 0)
+                SP_data_1d = self.data[i, :]
+                SP_data = np.append(SP_data, np.reshape(SP_data_1d, (1, self.data.shape[1])), axis = 0)
             # mean data at plot points
             SP_data_mean = np.mean(SP_data, axis = 0)
 
@@ -78,8 +78,8 @@ class RectSelect(object):
             fig2 = plt.figure(2)
             ax2 = fig2.add_subplot(111)
             for i in range(SP_data.shape[0]):
-                ax2.plot(range(self.data.shape[0]), SP_data[i, :], label = "No." + str(i))
-            ax2.plot(range(self.data.shape[0]), SP_data_mean, label = "mean")
+                ax2.plot(range(self.data.shape[1]), SP_data[i, :], label = "No." + str(i))
+            ax2.plot(range(self.data.shape[1]), SP_data_mean, label = "mean")
             fig2.legend()
             fig2.show()
 
@@ -96,6 +96,6 @@ if __name__ == "__main__":
 
     region = RectSelect()
     region.plot = np.stack((x, y), axis = 1)
-    region.data = np.reshape(data, (-1, 10))
+    region.data = np.reshape(data, (10, -1))
     
     plt.show()
