@@ -79,7 +79,7 @@ class RectSelect(object):
             ax2 = fig2.add_subplot(111)
             for i in range(SP_data.shape[0]):
                 ax2.plot(range(self.data.shape[1]), SP_data[i, :], label = "No." + str(i))
-            ax2.plot(range(self.data.shape[1]), SP_data_mean, label = "mean")
+            ax2.plot(range(self.data.shape[1]), SP_data_mean, label = "mean", linestyle = "-.")
             fig2.legend()
             fig2.show()
 
